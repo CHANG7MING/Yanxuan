@@ -3,7 +3,7 @@ import Header from "./Header.js";
 import Footer from "./Footer.js";
 import AJAX from "./AJAX.js";
 
-export default class List extends Component{
+export default class List extends Component {
 
     listAPI = "http://localhost:8080/getList"
 
@@ -13,7 +13,6 @@ export default class List extends Component{
         this.setCss()
         this.createHeader(this.elem)
         this.generateHTML() // 这是一个异步的方法, 在这里生成HTML, 生成之后调用生成footer, 否则会因为异步加载而导致页面footer在main之前
-
     }
 
     createHeader(parent) {
@@ -24,9 +23,8 @@ export default class List extends Component{
         new Footer().appendTo(parent)
     }
 
-    async generateHTML(){
+    async generateHTML() {
         let data = await new AJAX(this.listAPI)
-        // data = JSON.parse(data)
         console.log(data)
         this.elem.innerHTML += `
         <main>
@@ -36,36 +34,40 @@ export default class List extends Component{
                         <span>排序：</span>
                         <a href="javascript:;">销量</a>
                         <a href="javascript:;">价格</a>
-                        <a href="javascript:;">评价</a>
                     </div>
                 </div>
                 <div class="content">
-                    <div class="item">
-                        <div class="img-1">
-                            <a href="">
-                                <img src="https://picsum.photos/245/245" alt="">
+                
+        ${data.reduce((v, t) => {
+            return v + `
+                <div class="item">
+                    <div class="img-1">
+                        <a href="./detail.html?id=${t.id}" target="_blank">
+                            <img src="./productImg/${t.img1}" alt="">
+                        </a>
+                    </div>
+                    <div class="img-2">
+                        <a href="./detail.html?id=${t.id}" target="_blank">
+                            <img src="./productImg/${t.img2}" alt="">
+                        </a>
+                    </div>
+                    <div class="info">
+                        <div class="title">
+                            <a href="./detail.html?id=${t.id}" target="_blank">
+                                ${t.title}
                             </a>
                         </div>
-                        <div class="img-2">
-                            <a href="">
-                                <img src="https://picsum.photos/246/246" alt="">
-                            </a>
+                        <div class="price">
+                            <span>￥</span>
+                            <span>${t.price}</span>
                         </div>
-                        <div class="info">
-                            <div class="title">
-                                <a href="">
-                                    标题标题标题标题标题标题
-                                </a>
-                            </div>
-                            <div class="price">
-                                <span>￥</span>
-                                <span>99</span>
-                            </div>
-                            <div class="desc">
-                                <span>描述描述描述描述描述</span>
-                            </div>
+                        <div class="desc">
+                            <span>${t.desc}</span>
                         </div>
                     </div>
+                </div>`
+        }, "")}
+        
                 </div>
             </div>
         </main>

@@ -62,6 +62,7 @@ main .container .content .item .info {
 main .container .content .item .info .title {
   font-size: 13px;
   color: #333;
+  height: 35px;
   font-weight: 800;
   margin-bottom: 10px;
 }

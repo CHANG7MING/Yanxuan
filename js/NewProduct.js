@@ -33,7 +33,7 @@ export default class NewProduct extends Component {
                 ${data.reduce((v, t) => {
             return v + `
                     <li class="item-li"">
-                        <a href="detail.html?id=${t.id}">
+                        <a href="detail.html?id=${t.id}" target="_blank">
                             <div><img src="${t.images[0]}"></div>
                             <p>${t.title}</p>
                             <i>￥${t.type[0].price}</i>

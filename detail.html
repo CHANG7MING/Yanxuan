@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>详情页</title>
-    <script src="node_modules/jquery/dist/jquery.js"></script>
-    <link rel="stylesheet" href="./css/normalize.css">
-    <link rel="stylesheet" href="./css/header.css">
-    <link rel="stylesheet" href="./css/footer.css">
-    <link rel="stylesheet" href="./css/global.css">
-
 </head>
 <body>
-<script src="js/loadHeader.js"></script>
 
 <main>
-    <div class="container">
-        
-    </div>
+    
 </main>
 
 </body>
+<script type="module">
+    import Detail from "./js/Detail.js";
+
+    init()
+    function init(){
+        new Detail().appendTo("html")
+    }
+</script>
 </html>

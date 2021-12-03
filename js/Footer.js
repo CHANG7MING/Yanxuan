@@ -50,7 +50,7 @@ export default class Footer extends Component {
                         <div class="copy">
                             <p><a href="javascript:;">关于我们</a> | <a href="javascript:;">帮助中心 </a> | <a href="javascript:;">售后服务</a> | <a href="javascript:;">配送与验收</a> | <a
                                     href="javascript:;">商务合作</a> | <a href="javascript:;">企业采购</a> | <a href="javascript:;">友情链接</a></p>
-                            <p>网易公司版权所有 &copy; 1997-2017 食品经营许可证：JY13301080111719</p>
+                            <p>网易公司版权所有 &copy; 1997-2021 食品经营许可证：JY13301080111719</p>
                         </div>
                     </div>
                 </div>

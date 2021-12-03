@@ -24,6 +24,47 @@ function getCart(userId) {
     });
 }
 
+function getList(){
+    return new Promise((resolve, reject) => {
+        db.query(`SELECT \`id\`, \`title\`, \`desc\`, \`img1\`, \`img2\` FROM product;`, (err, result) => {
+            if (err) {
+                console.log(err);
+                resolve(err);
+            } else {
+                resolve(result);
+            }
+        });
+
+        // data.forEach(item => {
+        //     item.price = db.query(`SELECT \`price\` FROM sku WHERE pid=${item.id} AND id=${item.id}+01;`, (err,res) => {
+        //         item.price = res[0].price
+        //     })
+        // })
+        // console.log("123"+data)
+        // resolve(data)
+
+    });
+}
+
+function addListPrice(arr) {
+    return new Promise((resolve, reject) => {
+        let data = arr.map(item => {
+            return new Promise((resolve, reject) => db.query(`SELECT \`price\` FROM sku WHERE pid=${item.id} AND id= ${item.id}01;`, async (err, res) => {
+                Object.defineProperty(item, "price", {
+                    value: res[0].price,
+                    writable: true,
+                    enumerable: true,
+                    configurable: true
+                })
+                resolve()
+            }))
+        })
+        Promise.all(data).then(() => {
+            resolve(arr)
+        })
+    })
+}
+
 function login(obj) {
     return new Promise((resolve, reject) => {
         db.query(`select * from user where username='${obj.username}' and password='${obj.password}'`, (err, data) => {
@@ -52,39 +93,9 @@ function register(arr) {
     })
 }
 
-function selectPersonBySex(sex) {
-    return new Promise(function (resolve, reject) {
-        let str = "SELECT * FROM `user` WHERE `sex`=?"
-        sex = [sex]
-        db.query(str, sex, (err, result) => {
-            if (err) {
-                console.log(err)
-                resolve(false)
-            } else {
-                resolve(result)
-            }
-        })
-    })
-}
-
-function deleteItemById(id) {
-    return new Promise(function (resolve, reject) {
-        let str = "DELETE FROM `user` WHERE `id`=?"
-        id = [id]
-        db.query(str, id, (err) => {
-            if (err) {
-                console.log(err)
-                resolve(false)
-            } else {
-                resolve(true)
-            }
-        })
-    })
-}
-
 exports.db = db;
 exports.register = register;
-exports.selectPersonBySex = selectPersonBySex;
-exports.deleteItemById = deleteItemById;
 exports.login = login;
 exports.getCart = getCart;
+exports.getList = getList;
+exports.addListPrice = addListPrice;
