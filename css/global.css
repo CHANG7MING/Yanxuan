@@ -18,5 +18,18 @@ ul {
 
 .container {
     width: 1090px;
-    margin: auto;
+    margin: 0 auto;
+}
+
+
+.clear:after {
+    content: ".";
+    clear: both;
+    height: 0;
+    visibility: hidden;
+    display: block;
+}
+
+.clear {
+    zoom: 1;
 }

@@ -14,6 +14,7 @@
 			padding-top: 60px;
 			-webkit-box-shadow: 1px 1px 9px -1px rgba(0, 0, 0, 0.67);
 			box-shadow: 1px 1px 9px -1px rgba(0, 0, 0, 0.67);
+			right: 0;
 			top: -550px;
 
 			.login-content {
@@ -68,6 +69,7 @@
 						}
 
 						button {
+							margin-bottom: 15px;
 							width: 300px;
 							background: #B4A078;
 							border: none;
@@ -175,11 +177,4 @@ main .container {
 		}
 	}
 }
-
-footer {
-	background: #414141;
-	padding-top: 30px;
-	padding-bottom: 30px;
-}
-
 

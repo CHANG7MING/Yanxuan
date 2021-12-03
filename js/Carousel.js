@@ -23,7 +23,7 @@ export default class Carousel extends Component {
 
     constructor(list) {
         super();
-        document.querySelector("head").innerHTML+="<link rel=\"stylesheet\" href=\"https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css\" crossorigin=\"anonymous\">"
+        document.querySelector("head").innerHTML += "<link rel=\"stylesheet\" href=\"https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css\" crossorigin=\"anonymous\">"
         this.elem = document.createElement("div");
         this.elem.className = "carousel";
         if (list) this.setData(list);
@@ -37,7 +37,7 @@ export default class Carousel extends Component {
         if (typeof parent === "string") parent = document.querySelector(parent);
         if (parent) {
             parent.appendChild(this.elem);
-            this.elem.style.height = parent.offsetWidth / 5 + "px";
+            // this.elem.style.height = parent.offsetWidth / 5 + "px";
         }
     }
 
@@ -90,7 +90,7 @@ export default class Carousel extends Component {
         bn.style.width = "50px";
         bn.style.height = "50px";
         bn.style.backgroundColor = "#E2C199";
-        bn.style.borderRadius="50px";
+        bn.style.borderRadius = "50px";
         if (!left) bn.style.transform = "scale(-1,1) translate(0,-50%)";
         return bn;
     }
@@ -182,91 +182,8 @@ export default class Carousel extends Component {
     }
 
     setCss() {
-        if (Carousel.cssBool) return;
-        Carousel.cssBool = true;
-        Component.setCss(`
-        .carousel {
-            width: 100%;
-            /*height:100% !important;*/
-            position: relative;
-            overflow: hidden;
-        }
-
-        .img-con {
-            width: 200%;
-            /*height: 100%;
-            min-width: 420px;*/
-            position: absolute;
-            left: 0;
-        }
-
-        .img-con img {
-            width: 100%;
-            height: 100%;
-        }
-
-
-        .img-con .image-item {
-            width: 50%;
-            height: 100%;
-            float: left;
-            position: relative;
-        }
-
-        .dot {
-            list-style: none;
-            position: absolute;
-            margin: 0;
-            padding: 0;
-            bottom: 30px;
-            left: 50%;
-            transform: translate(-50%, 0);
-        }
-
-        .dot a {
-            display: block;
-            width: 8px;
-            height: 8px;
-            border-radius: 8px;
-            border: 1px solid #CECECE;
-            transition: all 0.5s;
-        }
-
-        .dot > li {
-            margin-left: 10px;
-            float: left;
-        }
-
-        .dot > li:first-child {
-            margin-left: 0;
-        }
-
-        .left, .right {
-            position: absolute;
-            top: 50%;
-            transform: translate(0, -50%);
-            color: white;
-            text-align: center;
-        }
-        
-        .left > i, .right > i {
-            font-size: 30px;
-            line-height: 50px;            
-            display: inline-block;
-            text-align: center;
-        }
-
-        .left:hover, .right:hover {
-            background-color: #CC9756 !important;
-        }
-
-        .left {
-            left: 20px;
-        }
-
-        .right {
-            right: 20px;
-        }
-        `)
+        document.head.innerHTML += `
+            <link rel="stylesheet" href="./css/carousel.css">
+        `
     }
 }

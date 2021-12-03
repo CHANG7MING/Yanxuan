@@ -3,50 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>网易严选</title>
-    <script src="node_modules/jquery/dist/jquery.js"></script>
-    <link rel="stylesheet" href="./css/normalize.css">
-    <link rel="stylesheet" href="./css/header.css">
-    <link rel="stylesheet" href="./css/index.css">
-    <link rel="stylesheet" href="./css/footer.css">
-    <link rel="stylesheet" href="./css/global.css">
 </head>
-<body>
-<script src="./js/loadHeader.js"></script>
-
-<div class="banner"></div>
-<div class="new-product">
-    <div class="container"></div>
-</div>
-
-
 <script type="module">
-    import Carousel from "./js/Carousel.js";
-    import NewProduct from "./js/NewProduct.js";
+    import Index from "./js/Index.js";
 
-    let bannerImg = [
-        {img: "./img/banner1.webp"},
-        {img: "./img/banner2.webp"},
-    ];
-
-    let newProductAPI = "http://localhost:63342/Yanxuan/json/test.json"
-
-    init();
+    init()
 
     function init() {
-        createBanner(bannerImg, ".banner")
-        generateNewProduct(newProductAPI, ".new-product > .container")
+        new Index().appendTo("body")
     }
-
-    function createBanner(bannerImg, parent) {
-        let carousel = new Carousel(bannerImg)
-        carousel.appendTo(parent)
-    }
-
-    function generateNewProduct(url, parent) {
-        let newProduct = new NewProduct(url)
-        newProduct.appendTo(parent)
-    }
-
 </script>
-</body>
 </html>

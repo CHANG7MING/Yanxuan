@@ -58,23 +58,29 @@
 			flex-direction: column;
 			align-items: center;
 
-			div {
-				background-color: #f4f4f4;
+			a {
+				text-align: center;
 
-				img {
-					width: 100%;
+				div {
+					background-color: #f4f4f4;
+
+					img {
+						width: 100%;
+					}
 				}
-			}
 
-			p {
-				margin-top: 35px;
-				margin-bottom: 10px;
-				font-weight: 800;
-			}
+				p {
+					margin-top: 35px;
+					margin-bottom: 10px;
+					font-weight: 800;
+				}
 
-			i {
-				color: red;
-				font-weight: 800;
+				i {
+					text-align: center;
+					color: red;
+					font-weight: 800;
+				}
+
 			}
 		}
 	}
