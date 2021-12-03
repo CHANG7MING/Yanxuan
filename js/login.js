@@ -1,8 +1,9 @@
 import Header from "./Header.js";
 import Footer from "./Footer.js";
 import Component from "./Component.js";
+import AJAX from "./AJAX.js";
 
-export default class extends Component {
+export default class Login extends Component {
 
     elem
     switchLogin
@@ -11,6 +12,7 @@ export default class extends Component {
     static registerAPI="http://localhost:8080/register"
     loginBtn
     registerBtn
+    formData
 
     constructor() {
         super();
@@ -30,14 +32,26 @@ export default class extends Component {
         this.registerBtn.addEventListener("click", e => this.btnClickHandler(e))
     }
 
-    btnClickHandler(e) {
+    async btnClickHandler(e) {
         e.preventDefault()
-        console.log(e.target)
-        if (e.target.className === "login"){
-
-        } else {
-            
+        let reqURL = e.target.id === "login" ? Login.loginAPI : Login.registerAPI
+        let reqBody = {
+            username: this.elem.querySelector("#username").value,
+            password: this.elem.querySelector("#password").value
         }
+        let data = await new AJAX(reqURL, {method:"POST",body:JSON.stringify(reqBody)})
+        if (!data.ok) {
+            console.log(data)
+            alert(data.msg)
+            return
+        } else if (data.ok) {
+            console.log(data)
+            let user = data.data
+            localStorage.setItem("user", JSON.stringify(user))
+            window.location.href = "./index.html"
+        }
+        console.log(data)
+
     }
 
     addSwitch() {

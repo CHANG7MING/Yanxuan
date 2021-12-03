@@ -1,10 +1,10 @@
 export default function (url, {method = "GET", body = null} = {method: "GET", body: null}) {
     return new Promise(function (resolve, reject) {
-        var xhr = new XMLHttpRequest();
+        let xhr = new XMLHttpRequest();
         xhr.open(method, url);
         xhr.send(body);
         xhr.onload = function () {
-            var data = xhr.response;
+            let data = xhr.response;
             try {
                 data = JSON.parse(data);
             } catch (e) {

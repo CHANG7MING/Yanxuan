@@ -1,0 +1,78 @@
+const http = require("http");
+const {register:dbRegister, getCart:dbGetCart, login:dbLogin} = require("./sql");
+
+http.createServer(function (req, res) {
+    var type = req.url.split("?")[0];
+    console.log("type: " + type)
+    res.writeHead(200, {
+        "Content-Type": "text/html;charset=utf-8",
+        "Access-Control-Allow-Origin": "*"
+    })
+    router(type, req, res)
+
+}).listen(8080);
+
+function router(type, req, res) {
+    switch (type) {
+        case "/login":
+            return login(req, res);
+        case "/register":
+            return register(req, res);
+        case "/getList":
+            return getList(req, res);
+        case "/getCart":
+            return getCart(req, res);
+    }
+}
+
+async function getList(req,res) {
+    let data = await getData(req);
+    // data = JSON.parse(data)
+
+    // res.end(data)
+    res.end("")
+}
+
+
+// TODO: 购物车
+async function getCart(req, res) {
+    let id = req.query;
+    let result = await dbGetCart(id);
+    res.end(JSON.stringify(result));
+}
+
+
+async function login(req, res) {
+    let data = await getData(req);
+    data = JSON.parse(data)
+    let result = await dbLogin(data)
+    console.log(result)
+
+
+    res.end(JSON.stringify(result));
+}
+
+
+async function register(req, res) {
+    let data = await getData(req)
+    data = JSON.parse(data)
+    let arr = [data.username, data.password]
+    console.log(arr)
+    if (!Array.isArray(arr) || arr.length !== 2 || !arr[0] || !arr[1]) {
+        return res.end(JSON.stringify({ok: false, msg: "数据格式错误"}))
+    }
+    let result = await dbRegister(arr)
+    res.end(JSON.stringify(result))
+}
+
+function getData(req) {
+    return new Promise(function (resolve, reject) {
+        let data = "";
+        req.on("data", function (chunk) {
+            data += chunk;
+        })
+        req.on("end", function () {
+            resolve(data);
+        })
+    })
+}
