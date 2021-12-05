@@ -7,8 +7,8 @@ export default class Footer extends Component {
 
     constructor() {
         super();
-        this.setHTML();
         this.setCss();
+        this.setHTML();
     }
 
     setHTML() {

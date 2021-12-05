@@ -1,0 +1,50 @@
+.zoom {
+  width: 430px;
+  position: relative;
+}
+.zoom .img-con, .zoom .zoom-con {
+  height: 430px;
+  width: 430px;
+  box-sizing: border-box;
+  border: 1px #DDD solid;
+  background-size: 430px 430px;
+}
+.zoom .img-con img, .zoom .zoom-con img {
+  height: 430px;
+  width: 430px;
+}
+.zoom .zoom-con {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 450px;
+  z-index: 100;
+  background-size: 860px 860px;
+}
+.zoom .img-list {
+  width: 430px;
+  height: 76px;
+  margin-top: 15px;
+}
+.zoom .img-list > div {
+  display: flex;
+  justify-content: space-between;
+}
+.zoom .img-list > div img {
+  height: 76px;
+  width: 76px;
+}
+.zoom .img-list > div .selected {
+  border: 2px solid #b4a078;
+  box-sizing: border-box;
+}
+
+.mask {
+  width: 215px;
+  height: 215px;
+  position: absolute;
+  display: none;
+  background-color: rgba(180, 160, 120, 0.3);
+}
+
+/*# sourceMappingURL=Zoom.css.map */

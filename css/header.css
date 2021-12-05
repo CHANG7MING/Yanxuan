@@ -4,6 +4,7 @@
 
 .hover {
   border-bottom: #cc9756 3px solid;
+  z-index: 100;
 }
 .hover a {
   color: #cc9756;

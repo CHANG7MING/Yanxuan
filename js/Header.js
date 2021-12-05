@@ -7,11 +7,12 @@ export default class Header extends Component {
 
     constructor() {
         super();
+        this.setCss()
         this.elem = document.createElement("header")
         this.generateHTML()
         this.navList = this.elem.querySelectorAll("#nav-list > li")
         this.listen()
-        this.setCss()
+        console.log(this.navList)
     }
 
     listen() {

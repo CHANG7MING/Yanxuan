@@ -4,7 +4,9 @@ const {
     getCart:dbGetCart,
     login:dbLogin,
     getList:dbGetList,
-    addListPrice:dbAddListPrice
+    addListPrice:dbAddListPrice,
+    getDetail:dbGetDetail,
+    addDetailSKUInfo: dbAddDetailSKUInfo
 } = require("./sql");
 
 http.createServer(function (req, res) {
@@ -28,7 +30,17 @@ function router(type, req, res) {
             return getList(req, res);
         case "/getCart":
             return getCart(req, res);
+        case "/getDetail":
+            return getDetail(req, res);
     }
+}
+
+async function getDetail(req, res) {
+    let id = req.url.split("=")[1];
+    console.log(id)
+    let data = await dbGetDetail(id);
+    data = await dbAddDetailSKUInfo(data[0])
+    res.end(JSON.stringify(data));
 }
 
 async function getList(req,res) {

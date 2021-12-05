@@ -12,6 +12,38 @@ async function init() {
     });
 }
 
+function getDetail(id) {
+    return new Promise((resolve, reject) => {
+        db.query(`SELECT * FROM product WHERE id = ${id}`, (err, data) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(data);
+            }
+        });
+    });
+}
+
+function addDetailSKUInfo(obj) {
+    return new Promise((resolve, reject) => db.query(`SELECT * FROM sku WHERE pid=${obj.id};`, async (err, res) => {
+        Object.defineProperty(obj, "sku", {
+            value: [],
+            writable: true,
+            enumerable: true,
+            configurable: true
+        })
+        res.forEach(i => {
+            obj.sku.push({
+                id: i.id,
+                pid: i.pid,
+                title: i.title,
+                price: i.price
+            })
+        });
+        resolve(obj)
+    }))
+}
+
 function getCart(userId) {
     return new Promise((resolve, reject) => {
         db.query(`SELECT * FROM cart WHERE userId = ${userId}`, (err, result) => {
@@ -34,15 +66,6 @@ function getList(){
                 resolve(result);
             }
         });
-
-        // data.forEach(item => {
-        //     item.price = db.query(`SELECT \`price\` FROM sku WHERE pid=${item.id} AND id=${item.id}+01;`, (err,res) => {
-        //         item.price = res[0].price
-        //     })
-        // })
-        // console.log("123"+data)
-        // resolve(data)
-
     });
 }
 
@@ -99,3 +122,5 @@ exports.login = login;
 exports.getCart = getCart;
 exports.getList = getList;
 exports.addListPrice = addListPrice;
+exports.getDetail = getDetail;
+exports.addDetailSKUInfo = addDetailSKUInfo;

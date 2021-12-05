@@ -135,4 +135,13 @@ export default class Utils {
             styleSheet.addRule($1,$2,styleSheet.cssRules.length);
         })
     }
+
+    static getUrlParam(key, url = location.search){
+        const reg = new RegExp("(\\?|&)" + key + "=([^&]*)(&|$)");
+        const r = url.match(reg);
+        if (r != null) {
+            return unescape(r[2]);
+        }
+        return null;
+    }
 }

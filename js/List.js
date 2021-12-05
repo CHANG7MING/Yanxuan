@@ -26,7 +26,8 @@ export default class List extends Component {
     async generateHTML() {
         let data = await new AJAX(this.listAPI)
         console.log(data)
-        this.elem.innerHTML += `
+        let main = document.createElement("main")
+        main.innerHTML += `
         <main>
             <div class="container">
                 <div class="top">
@@ -72,6 +73,7 @@ export default class List extends Component {
             </div>
         </main>
         `
+        this.elem.append(main)
         this.createFooter(this.elem)
     }
 

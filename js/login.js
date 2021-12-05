@@ -73,7 +73,8 @@ export default class Login extends Component {
     }
 
     generateHTML() {
-        this.elem.innerHTML += `
+        let main = document.createElement("main")
+        main.innerHTML += `
             <div class="banner">
                 <img src="./img/loginbg.jpg" alt="">
             </div>
@@ -115,6 +116,7 @@ export default class Login extends Component {
                 </div>
             </div>
         `
+        this.elem.append(main)
     }
 
     setCss() {
