@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>购物车</title>
+    <link rel="stylesheet" href="./css/cart.css">
+    <link rel="stylesheet" href="./css/global.css">
+</head>
+<script type="module">
+    import Cart from "./js/Cart.js";
+
+    init()
+
+    function init() {
+        new Cart().appendTo("html")
+    }
+</script>
+</html>

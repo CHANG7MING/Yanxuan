@@ -12,7 +12,7 @@ export default class Login extends Component {
     static registerAPI="http://localhost:8080/register"
     loginBtn
     registerBtn
-    formData
+
 
     constructor() {
         super();
@@ -40,6 +40,7 @@ export default class Login extends Component {
             password: this.elem.querySelector("#password").value
         }
         let data = await new AJAX(reqURL, {method:"POST",body:JSON.stringify(reqBody)})
+        console.log(data)
         if (!data.ok) {
             console.log(data)
             alert(data.msg)
@@ -86,12 +87,12 @@ export default class Login extends Component {
                             <img src="./img/eb0a8c711a86705c798dd6364fbbf8c6.png" alt="">
                         </div>
                         <div class="login-content">
-                            <div class="qr hidden">
+                            <div class="qr">
                                 <p>APP扫码 安全登录</p>
                                 <img src="./img/（PNG 图像，190x190 像素）.png" alt="">
                                 <p>使用<span>网易严选APP</span>扫码登录</p>
                             </div>
-                            <div class="form">
+                            <div class="form hidden">
                                 <form action="">
                                     <div>
                                         <label for="username"><i class="fa fa-user"></i></label>

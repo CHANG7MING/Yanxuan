@@ -12,6 +12,67 @@ async function init() {
     });
 }
 
+function addCart(data) {
+    return new Promise((resolve, reject) => {
+        db.query(`SELECT * FROM cart WHERE uid = ${data.uid} AND pid = ${data.pid}`, (err, res) => {
+            if (err) {
+                resolve({
+                    ok: false,
+                    msg: "查询失败"
+                });
+            } else if (res.length === 1) {
+                db.query(`UPDATE cart SET num = ${res[0].num + data.num} WHERE pid = ${data.pid}`, (err, data) => {
+                    if (err) {
+                        resolve({
+                            ok: false,
+                            msg: "添加失败"
+                        });
+                    } else {
+                        resolve({
+                            ok: true,
+                            msg: "添加成功"
+                        });
+                    }
+                });
+            } else if (res.length === 0) {
+                db.query(`INSERT INTO cart (uid, pid, num) VALUES (${data.uid}, ${data.pid}, ${data.num})`, (err, data) => {
+                    if (err) {
+                        resolve({
+                            ok: false,
+                            msg: "新增失败"
+                        });
+                    } else {
+                        resolve({
+                            ok: true,
+                            msg: "新增成功"
+                        });
+                    }
+                });
+            } else {
+                resolve({
+                    ok: false,
+                    msg: "数据库数据可能存在错误"
+                });
+            }
+        });
+    });
+}
+
+function updateCart(id, num){
+    return new Promise((resolve, reject) => {
+        let str = num === 0 ? "DELETE FROM cart WHERE id = ?" : "update cart set num = ? where id = ?";
+        let arr = num === 0 ? [id] : [num, id];
+        db.query(str, arr, (err, data) => {
+            if (err) {
+                console.log(err)
+                resolve(false);
+            } else {
+                resolve(true);
+            }
+        });
+    });
+}
+
 function getDetail(id) {
     return new Promise((resolve, reject) => {
         db.query(`SELECT * FROM product WHERE id = ${id}`, (err, data) => {
@@ -36,7 +97,7 @@ function addDetailSKUInfo(obj) {
             obj.sku.push({
                 id: i.id,
                 pid: i.pid,
-                title: i.title,
+                subtitle: i.subtitle,
                 price: i.price
             })
         });
@@ -44,11 +105,12 @@ function addDetailSKUInfo(obj) {
     }))
 }
 
-function getCart(userId) {
+function getCart(uid) {
     return new Promise((resolve, reject) => {
-        db.query(`SELECT * FROM cart WHERE userId = ${userId}`, (err, result) => {
+        db.query(`SELECT cart.id, cart.pid, cart.num, product.title, sku.price, sku.subtitle FROM sku, product, cart WHERE sku.pid = product.id AND cart.pid = sku.id AND cart.uid = ${uid}`, (err, result) => {
             if (err) {
-                reject(err);
+                console.log(err)
+                resolve(false);
             } else {
                 resolve(result);
             }
@@ -124,3 +186,5 @@ exports.getList = getList;
 exports.addListPrice = addListPrice;
 exports.getDetail = getDetail;
 exports.addDetailSKUInfo = addDetailSKUInfo;
+exports.updateCart = updateCart;
+exports.addCart = addCart;

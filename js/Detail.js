@@ -4,30 +4,106 @@ import Footer from "./Footer.js";
 import AJAX from "./AJAX.js";
 import Utils from "./Utils.js";
 import Zoom from "./Zoom.js";
+import StepNumber from "./StepNumber.js";
 
 export default class Detail extends Component {
 
     static detailAPI = "http://localhost:8080/getDetail";
+    static addCartAPI = "http://localhost:8080/addCart";
+
     data
     prev
     zoom
+    numCon
+    imgList
+    main
+    stepNumber
+    currentSelect
+    id
 
     constructor() {
         super();
         this.setCss()
         this.elem = document.createElement("body")
-        this.createHeader(this.elem)
+        this.id = Utils.getUrlParam("id") // get id from url
         this.generateHTML()
     }
 
-
     async generateHTML() {
-        let id = Utils.getUrlParam("id")
-        console.log(id)
-        this.data = await new AJAX(Detail.detailAPI + "?id=" + id)
-        console.log(this.data)
-        let main = document.createElement("main")
-        main.innerHTML += `
+        this.data = await new AJAX(Detail.detailAPI + "?id=" + this.id) // get data from server by id
+        this.createHeader(this.elem) // create header content
+        this.createMain(this.elem) // create main content
+        this.createFooter(this.elem) //
+        this.imgList = [this.data.img1, this.data.img2, this.data.img3, this.data.img4, this.data.img5]
+        this.createZoom(this.imgList, ".main-content-left")
+
+
+        this.linkSKUWithImgCon()
+        this.numCon = this.elem.querySelector(".step-num") // get step-num container
+        this.changeCurrentSelect(this.data.sku[0].id)
+        this.createStepNumber(this.main.querySelector(".step-num"))
+        this.listenAddCartBtn()
+    }
+
+    listenAddCartBtn(){
+        this.elem.querySelector(".add-cart").addEventListener("click", (e) => this.addCartHandler(e))
+    }
+
+    addCartHandler(e){
+        let user = JSON.parse(localStorage.getItem("user"))
+        if (!user) location.href = "./login.html"
+        let body = {
+            uid: user.id,
+            pid:this.currentSelect,
+            num:this.stepNumber.num
+        }
+        console.log(body)
+        new AJAX(Detail.addCartAPI, {
+            method: "POST",
+            body: JSON.stringify(body)
+        })
+    }
+
+    changeCurrentSelect(id) {
+        this.currentSelect = id
+        this.elem.querySelector("#price").innerText = this.data.sku.find(item => item.id === id).price
+    }
+
+    linkSKUWithImgCon() {
+        let sku = this.elem.querySelectorAll(".choose-item")
+        sku.forEach(item => item.addEventListener("click", e => this.skuClickHandler(e)))
+    }
+
+    skuClickHandler(e) {
+        if (e.target.nodeName !== "IMG") return
+        if (this.prev) this.prev.parentNode.classList.remove("selected")
+        this.prev = e.target
+        e.target.parentNode.classList.add("selected")
+        this.changeCurrentSelect(Number(e.target.parentNode.getAttribute("sku")))
+        this.zoom.changeImg("./" + this.currentSelect + ".webp")
+    }
+
+    createStepNumber(parent){
+        this.stepNumber = new StepNumber()
+        this.stepNumber.appendTo(parent)
+    }
+
+    createZoom(arr, parent) {
+        this.zoom = new Zoom(arr)
+        this.zoom.appendTo(parent)
+    }
+
+    createHeader(parent) {
+        new Header().appendTo(parent)
+    }
+
+    createFooter(parent) {
+        new Footer().appendTo(parent)
+    }
+
+    createMain(parent) {
+        this.main = document.createElement("main")
+        this.main.innerHTML += `
         <main>
             <div class="container">
                 <div class="main-content">
@@ -46,7 +122,7 @@ export default class Detail extends Component {
                         <div class="right-main">
                             <div>
                                 <span>价格</span>
-                                <strong>¥<span>${this.data.sku[0].price}</span></strong>
+                                <strong>¥<span id="price">${this.data.sku[0].price}</span></strong>
                             </div>
                             <div>
                                 <span>促销</span>
@@ -72,26 +148,19 @@ export default class Detail extends Component {
                             <div class="choose-content">
                                 
                             ${this.data.sku.reduce((v, t) => {
-            return v + `
-                                <div class="choose-item">
+                return v + `
+                                <div class="choose-item" sku="${t.id}">
                                     <img src="./productImg/${t.id}.webp" alt="">
-                                    <span>${t.title}</span>
-                               </div>
+                                    <span>${t.subtitle}</span>
+                                </div>
         `
-        }, "")}
+            }, "")}
                                 
                             </div>
                         </div>
         
                         <div class="step-num">
-                            <span>数量</span>
-                            <div class="step-num-con">
-        
-                                <span><i class="fa fa-minus"></i></span>
-                                <input type="text" value="1">
-                                <span><i class="fa fa-plus"></i></span>
-        
-                            </div>
+                            <span>数量</span>             
                         </div>
         
                         <div class="buy">
@@ -102,44 +171,8 @@ export default class Detail extends Component {
                 </div>
             </div>
         </main>
-        `
-        this.elem.append(main)
-        this.createFooter(this.elem)
-        let imgList=[this.data.img1, this.data.img2,this.data.img3,this.data.img4,this.data.img5]
-        console.log(imgList)
-
-        this.createZoom(imgList, ".main-content-left")
-        this.linkSKUWithImgCon()
-    }
-
-    linkSKUWithImgCon(){
-        let sku = this.elem.querySelectorAll(".choose-item")
-        sku.forEach(item => item.addEventListener("click", e => this.skuClickHandler(e)))
-
-    }
-
-    skuClickHandler(e){
-        console.log(e.target)
-        if (e.target.nodeName !== "IMG") return
-        if (this.prev) this.prev.parentNode.classList.remove("selected")
-        console.log(e.target.parentNode)
-        e.target.parentNode.classList.add("selected")
-        this.prev = e.target
-        console.log(e.target.src.match(/.*\/(.*?\..*)/)[1])
-        this.zoom.changeImg("./"+e.target.src.match(/.*\/(.*?\..*)/)[1])
-    }
-
-    createZoom(arr,parent){
-        this.zoom = new Zoom(arr)
-        this.zoom.appendTo(parent)
-    }
-
-    createHeader(parent) {
-        new Header().appendTo(parent)
-    }
-
-    createFooter(parent) {
-        new Footer().appendTo(parent)
+`
+        parent.appendChild(this.main)
     }
 
     setCss() {

@@ -4,15 +4,36 @@ export default class Header extends Component {
     static cssBool=false;
     navList
     elem
+    userStatus
+    userElem
 
     constructor() {
         super();
         this.setCss()
         this.elem = document.createElement("header")
         this.generateHTML()
+        this.userElem = this.elem.querySelector(".user")
+        this.userElem.addEventListener("click", e => this.logoutHandler(e))
+        this.getUserStatus()
         this.navList = this.elem.querySelectorAll("#nav-list > li")
         this.listen()
-        console.log(this.navList)
+    }
+
+    getUserStatus(){
+        this.userStatus = JSON.parse(localStorage.getItem('user'))
+        if (!this.userStatus) {
+            this.userElem.innerHTML = `<a href="./login.html">登录 / 注册</a>`
+            return
+        }
+        this.userElem.innerHTML = `
+            <a href="javascript:;">${this.userStatus.username}, 点击退出登录</a>
+        `
+    }
+
+    logoutHandler(e){
+        e.stopPropagation()
+        localStorage.removeItem('user')
+        this.getUserStatus()
     }
 
     listen() {
@@ -39,7 +60,7 @@ export default class Header extends Component {
             <div class="top-bar">
                 <div class="container">
                     <ul>
-                        <li><a href="javascript:;">我的订单</a></li>
+                        <li class="user"></li>
                         <li><a href="javascript:;">会员</a></li>
                         <li><a href="javascript:;">甄选家</a></li>
                         <li><a href="javascript:;">企业采购</a></li>
@@ -51,7 +72,7 @@ export default class Header extends Component {
             
             <div class="title">
                 <div class="container">
-                    <a href="javascript:;" class="logo"></a>
+                    <a href="./index.html" class="logo"></a>
                     <div class="search">
                         <form>
                             <div class="search-logo"></div>
@@ -70,13 +91,15 @@ export default class Header extends Component {
                         </ul>
                     </div>
             
+                        <a href="./cart.html">
                     <div class="cart">
-                        <div class="cart-logo">
-                            <div></div>
-                        </div>
-                        <span>购物车</span>
-                        <span class="cart-num">0</span>
+                            <div class="cart-logo">
+                                <div></div>
+                            </div>
+                            <span>购物车</span>
+                            <span class="cart-num">0</span>
                     </div>
+                        </a>
             
                 </div>
             </div>
@@ -85,7 +108,7 @@ export default class Header extends Component {
                 <div class="container">
                     <ul id="nav-list">
                         <li>
-                            <a href="javascript:;">首页</a>
+                            <a href="./index.html">首页</a>
                             <div class="drop-down hidden">
                                 <ul>
                                     <li>品质尖货</li>

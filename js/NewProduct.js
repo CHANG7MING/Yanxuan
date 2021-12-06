@@ -20,6 +20,7 @@ export default class NewProduct extends Component {
         console.log(url);
         let res = await fetch(url);
         let data = await res.json();
+        data = data.slice(0,4)
         console.log(data);
         this.content = `
             <div class="new-product">
@@ -34,9 +35,9 @@ export default class NewProduct extends Component {
             return v + `
                     <li class="item-li"">
                         <a href="detail.html?id=${t.id}" target="_blank">
-                            <div><img src="${t.images[0]}"></div>
+                            <div><img src="./productImg/${t.img1}"></div>
                             <p>${t.title}</p>
-                            <i>￥${t.type[0].price}</i>
+                            <i>￥${t.price}</i>
                         </a>
                     </li>
                     

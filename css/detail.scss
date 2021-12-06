@@ -150,7 +150,7 @@ main {
 				}
 
 				.selected {
-					border: 2px solid #b4a078;
+					border: 2px solid #b4a078 !important;
 				}
 
 
@@ -163,39 +163,7 @@ main {
 					align-items: center;
 					font-size: 13px;
 
-					.step-num-con {
-						display: flex;
-						width: 135px;
-						height: 35px;
-						border: 1px solid #ddd;
 
-						span {
-							display: block;
-							width: 25%;
-							height: 100%;
-							box-sizing: border-box;
-							text-align: center;
-							line-height: 35px;
-							color: #999999;
-						}
-
-						.disable {
-							color: #D3D3D3;
-						}
-
-						input {
-							height: 100%;
-							border-top: none;
-							border-bottom: none;
-							border-left: 1px solid #ddd;
-							border-right: 1px solid #ddd;
-							outline: none;
-							text-align: center;
-							display: inline-block;
-							width: 50%;
-							box-sizing: border-box;
-						}
-					}
 				}
 
 				.buy {

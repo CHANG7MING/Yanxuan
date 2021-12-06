@@ -20,6 +20,7 @@
   left: 450px;
   z-index: 100;
   background-size: 860px 860px;
+  background-color: #fff;
 }
 .zoom .img-list {
   width: 430px;

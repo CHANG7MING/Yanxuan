@@ -1,0 +1,33 @@
+.step-num-con {
+  display: flex;
+  width: 135px;
+  height: 35px;
+  border: 1px solid #ddd;
+}
+.step-num-con span {
+  display: block;
+  width: 25%;
+  height: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  line-height: 35px;
+  color: #999999;
+  background-color: #fff;
+}
+.step-num-con .disable {
+  color: #D3D3D3;
+}
+.step-num-con input {
+  height: 100%;
+  border-top: none;
+  border-bottom: none;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  outline: none;
+  text-align: center;
+  display: inline-block;
+  width: 50%;
+  box-sizing: border-box;
+}
+
+/*# sourceMappingURL=stepnumber.css.map */

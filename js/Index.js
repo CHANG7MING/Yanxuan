@@ -13,17 +13,15 @@ export default class Index extends Component {
         {img: "../img/banner2.webp"},
     ];
 
-    newProductAPI = "http://localhost:63342/Yanxuan/json/test.json"
+    newProductAPI = "http://localhost:8080/getList"
 
     constructor() {
         super();
         this.elem = document.createElement("body")
         this.setCss()
         this.createHeader(this.elem)
-
         this.createBanner(this.bannerImg, this.elem)
         this.generateNewProduct(this.newProductAPI, this.elem)
-
         this.createFooter(this.elem)
 
     }
