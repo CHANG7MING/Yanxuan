@@ -12,6 +12,12 @@ export default class Cart extends Component {
     main
     data
     userInfo
+    selectAllBox
+    cks
+    total
+    subtotals
+    totalPrice = 0
+    checkedItem = []
 
     constructor() {
         super();
@@ -20,6 +26,7 @@ export default class Cart extends Component {
         if (!this.userInfo) window.location.href = "./login.html"
         this.updateDBNumberDebounce = this.debounce(this.updateDBNumber, 500) // 创建防抖函数, 用于计数器防抖更新数据库
         this.generateHTML()
+
     }
 
 
@@ -31,14 +38,54 @@ export default class Cart extends Component {
         this.createFooter(this.elem)
         this.createItems(this.elem.querySelector("tbody"))
         this.createTableBottom(this.elem.querySelector(".table-bottom"))
+
+        this.total = this.elem.querySelector(".total-price")
+        this.subtotals = this.elem.querySelectorAll(".subtotal")
+        this.selectAllBox = this.elem.querySelector(".select-all")
+        this.selectAllBox.addEventListener("click", e => this.checkHandler(e))
+
         this.updateTotalPrice()
 
     }
 
+    listenCheckBox() {
+        this.cks = this.elem.querySelectorAll(".select-one")
+        this.cks.forEach(item => item.addEventListener("click", e => this.checkHandler(e)))
+    }
+
+    checkHandler(e) {
+        if (e.target.className === "select-all") this.selectAllBox.checked ? this.selectAll() : this.unSelectAll()
+        this.checkedItem = Array.from(this.cks).filter(item => item.checked)
+        this.checkedItem.length === this.cks.length ? this.selectAllBox.checked = true : this.selectAllBox.checked = false
+        this.updateTotalPrice()
+    }
+
+    selectAll(){
+        this.cks.forEach(item => item.checked = true)
+    }
+
+    unSelectAll(){
+        this.cks.forEach(item => item.checked = false)
+    }
+
+    // 更新应付总额
+    updateTotalPrice() {
+        if(!this.checkedItem) {
+            this.totalPrice = 0
+        }
+        else {
+            this.totalPrice = this.checkedItem.reduce((v, t) => {
+                return v + parseInt(t.parentNode.parentNode.querySelector(".subtotal").innerText)
+            }, 0)
+        }
+        this.total.innerText = this.totalPrice.toFixed(2)
+    }
+
+
     createTableBottom(parent) {
         parent.innerHTML = `
             <div class="total">
-                <p>应付总额：<span>￥<span class="total-price"></span></span></p>
+                <p>应付总额：<span>￥<span class="total-price">0</span></span></p>
             </div>
             <input type="submit" value="下单">
         `
@@ -49,7 +96,7 @@ export default class Cart extends Component {
             return v + `
                 <tr>
                     <td>
-                        <input type="checkbox" name="" aria-label="select-one" class="item-checkbox" data="${t.id}">
+                        <input type="checkbox" name="" aria-label="select-one" class="select-one" data="${t.id}">
                     </td>
                     <td class="detail">
                         <div class="img-con">
@@ -79,6 +126,10 @@ export default class Cart extends Component {
             `
         }, "")
 
+        // 删除商品
+        parent.querySelectorAll(".del").forEach(item => item.addEventListener("click", e => this.delHandler(e)))
+        this.listenCheckBox()
+
         // 创建计数器, 并且更新数据库
         for (let i = 0; i < this.data.length; i++) {
             let _step = new StepNumber(this.data[i].num)
@@ -87,12 +138,12 @@ export default class Cart extends Component {
                 let _subtotal = parent.querySelector(`.subtotal[data='${this.data[i].pid}']`)
                 _subtotal.innerText = Number(this.data[i].price) * Number(_step.num)
                 this.updateTotalPrice()
+                // 防抖 更新数据库
                 this.updateDBNumberDebounce(this.data[i].id, _step.num)
             })
         }
 
-        // 删除商品
-        parent.querySelectorAll(".del").forEach(item => item.addEventListener("click", e => this.delHandler(e)))
+
     }
 
 
@@ -134,16 +185,6 @@ export default class Cart extends Component {
         };
     }
 
-    updateTotalPrice() {
-        let _totalPrice = 0
-        let _total = this.elem.querySelector(".total-price")
-        let _subtotals = this.elem.querySelectorAll(".subtotal")
-        for (let i = 0; i < _subtotals.length; i++) {
-            _totalPrice += Number(_subtotals[i].innerText)
-        }
-        _total.innerText = _totalPrice.toFixed(2)
-    }
-
     createHeader(parent) {
         new Header().appendTo(parent)
     }
@@ -161,7 +202,7 @@ export default class Cart extends Component {
                     <thead>
                     <tr>
                         <td>
-                            <input type="checkbox" name=""> 全选
+                            <input type="checkbox" name="" class="select-all"> 全选
                         </td>
                         <td>商品信息</td>
                         <td>单价</td>

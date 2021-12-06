@@ -5,17 +5,18 @@ import AJAX from "./AJAX.js";
 
 export default class Login extends Component {
 
+    static loginAPI="http://localhost:8080/login"
+    static registerAPI="http://localhost:8080/register"
     elem
     switchLogin
     loginContent
-    static loginAPI="http://localhost:8080/login"
-    static registerAPI="http://localhost:8080/register"
     loginBtn
     registerBtn
 
 
     constructor() {
         super();
+        if (localStorage.getItem("user")) window.location.href = "./index.html"
         this.elem = document.createElement("body")
         this.setCss()
         this.createHeader(this.elem)

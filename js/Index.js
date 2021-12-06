@@ -3,27 +3,30 @@ import NewProduct from "./NewProduct.js";
 import Header from "./Header.js";
 import Footer from "./Footer.js";
 import Component from "./Component.js";
-
-
+import AJAX from "./AJAX.js";
 
 export default class Index extends Component {
+    static dataAPI = "http://localhost:8080/getList"
     elem
     bannerImg = [
         {img: "../img/banner1.webp"},
         {img: "../img/banner2.webp"},
     ];
 
-    newProductAPI = "http://localhost:8080/getList"
-
     constructor() {
         super();
         this.elem = document.createElement("body")
         this.setCss()
+        this.generateHTML()
+    }
+
+    async generateHTML() {
         this.createHeader(this.elem)
         this.createBanner(this.bannerImg, this.elem)
-        this.generateNewProduct(this.newProductAPI, this.elem)
+        let data = await new AJAX(Index.dataAPI)
+        console.log(data)
+        this.generateNewProduct(data, this.elem)
         this.createFooter(this.elem)
-
     }
 
     createHeader(parent) {
@@ -34,8 +37,8 @@ export default class Index extends Component {
         new Carousel(bannerImg).appendTo(parent)
     }
 
-    generateNewProduct(url, parent) {
-        new NewProduct(url).appendTo(parent)
+    generateNewProduct(data, parent) {
+        new NewProduct(data).appendTo(parent)
     }
 
     createFooter(parent) {

@@ -16,19 +16,15 @@ export default class NewProduct extends Component {
         this.elem = document.createElement("div");
     }
 
-    async generateItems(url) {
-        console.log(url);
-        let res = await fetch(url);
-        let data = await res.json();
+    async generateItems(data) {
         data = data.slice(0,4)
-        console.log(data);
         this.content = `
             <div class="new-product">
             <div class="container">
             <div class="top">
                 <h1>新品首发</h1>
                 <span>为你寻觅世间好物</span>
-                <i>更多新品 ></i>
+                <i><a href="./list.html">更多新品 ></a></i>
            </div>
            <ul class="new-item">
                 ${data.reduce((v, t) => {
@@ -40,7 +36,6 @@ export default class NewProduct extends Component {
                             <i>￥${t.price}</i>
                         </a>
                     </li>
-                    
                 `
         }, "")}
            </ul>

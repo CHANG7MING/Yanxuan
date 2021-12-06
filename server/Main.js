@@ -47,7 +47,7 @@ async function addCart(req,res){
     console.log(data);
     let result = await dbAddCart(data);
     console.log(result);
-    res.end(JSON.stringify(result))
+    res.end(JSON.stringify(result));
 }
 
 async function updateCart(req,res) {

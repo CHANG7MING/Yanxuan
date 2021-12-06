@@ -3,7 +3,6 @@
 }
 
 .hover {
-	//box-sizing: border-box;
 	border-bottom: #cc9756 3px solid;
 	z-index: 100;
 
@@ -83,6 +82,8 @@
 		overflow: hidden;
 
 		input {
+			outline: none;
+
 			&:nth-of-type(1) {
 				flex: 1;
 				border: none;

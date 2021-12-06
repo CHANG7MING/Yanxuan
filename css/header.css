@@ -72,6 +72,9 @@
   border-radius: 100px;
   overflow: hidden;
 }
+.search form input {
+  outline: none;
+}
 .search form input:nth-of-type(1) {
   flex: 1;
   border: none;
