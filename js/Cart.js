@@ -60,10 +60,12 @@ export default class Cart extends Component {
         this.updateTotalPrice()
     }
 
+    // 全选checkbox
     selectAll() {
         this.cks.forEach(item => item.checked = true)
     }
 
+    // 取消全选checkbox
     unSelectAll() {
         this.cks.forEach(item => item.checked = false)
     }
@@ -80,7 +82,7 @@ export default class Cart extends Component {
         this.total.innerText = this.totalPrice.toFixed(2)
     }
 
-
+    // 创建购物车表格底部 (含总价, 下单按钮)
     createTableBottom(parent) {
         parent.innerHTML = `
             <div class="total">
@@ -90,47 +92,8 @@ export default class Cart extends Component {
         `
     }
 
-    createItems(parent) {
-        parent.innerHTML = this.data.reduce((v, t) => {
-            return v + `
-                <tr>
-                    <td>
-                        <input type="checkbox" name="" aria-label="select-one" class="select-one" data="${t.id}">
-                    </td>
-                    <td class="detail">
-                        <div class="img-con">
-                            <img src="./productImg/${t.pid}.webp" alt="">
-                        </div>
-                        <div class="desc">
-                            <p class="title">${t.title}</p>
-                            <p class="sku">${t.subtitle}</p>
-                        </div>
-
-                    </td>
-                    <td>
-                        <p>￥<span class="unit-price">${t.price}</span></p>
-                    </td>
-                    <td>
-                        <div class="step-num" data="${t.id}">
-                            
-                        </div>
-                    </td>
-                    <td>
-                        <p>￥<span class="subtotal" data='${t.pid}'>${t.price * t.num}</span></p>
-                    </td>
-                    <td>
-                        <a href="javascript:;" class="del" data="${t.id}">删除</a>
-                    </td>
-                </tr>
-            `
-        }, "")
-
-        this.listenDelBtn()
-        this.createStepNumber(parent)
-    }
-
     // 监听删除商品按钮
-    listenDelBtn() {
+    listenDelBtn(parent) {
         parent.querySelectorAll(".del").forEach(item => item.addEventListener("click", e => this.delHandler(e)))
         this.listenCheckBox()
     }
@@ -140,7 +103,8 @@ export default class Cart extends Component {
         for (let i = 0; i < this.data.length; i++) {
             let _step = new StepNumber(this.data[i].num)
             _step.appendTo(parent.querySelector(`.step-num[data='${this.data[i].id}']`))
-            _step.elem.addEventListener("change", (e) => {
+            // 给计数器加减按钮添加事件, 可以点击后更新数据库, 并更新购物车表格底部总价
+            _step.elem.addEventListener("change", e => {
                 let _subtotal = parent.querySelector(`.subtotal[data='${this.data[i].pid}']`)
                 _subtotal.innerText = Number(this.data[i].price) * Number(_step.num)
                 this.updateTotalPrice()
@@ -200,6 +164,47 @@ export default class Cart extends Component {
         new Footer().appendTo(parent)
     }
 
+    // 创建购物车表格内部的商品
+    createItems(parent) {
+        parent.innerHTML = this.data.reduce((v, t) => {
+            return v + `
+                <tr>
+                    <td>
+                        <input type="checkbox" name="" aria-label="select-one" class="select-one" data="${t.id}">
+                    </td>
+                    <td class="detail">
+                        <div class="img-con">
+                            <img src="./productImg/${t.pid}.webp" alt="">
+                        </div>
+                        <div class="desc">
+                            <p class="title">${t.title}</p>
+                            <p class="sku">${t.subtitle}</p>
+                        </div>
+
+                    </td>
+                    <td>
+                        <p>￥<span class="unit-price">${t.price}</span></p>
+                    </td>
+                    <td>
+                        <div class="step-num" data="${t.id}">
+                            
+                        </div>
+                    </td>
+                    <td>
+                        <p>￥<span class="subtotal" data='${t.pid}'>${t.price * t.num}</span></p>
+                    </td>
+                    <td>
+                        <a href="javascript:;" class="del" data="${t.id}">删除</a>
+                    </td>
+                </tr>
+            `
+        }, "")
+
+        this.listenDelBtn(parent)
+        this.createStepNumber(parent)
+    }
+
+    // 创建页面主要内容 (含购物车表头)
     createMain(parent) {
         this.main = document.createElement("main")
         this.main.innerHTML += `

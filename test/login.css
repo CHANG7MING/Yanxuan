@@ -1,0 +1,146 @@
+.login .container {
+  display: flex;
+  position: relative;
+  flex-direction: row-reverse;
+}
+.login .container .login-box {
+  width: 385px;
+  height: 480px;
+  position: absolute;
+  background: white;
+  text-align: center;
+  box-sizing: border-box;
+  padding-top: 60px;
+  -webkit-box-shadow: 1px 1px 9px -1px rgba(0, 0, 0, 0.67);
+  box-shadow: 1px 1px 9px -1px rgba(0, 0, 0, 0.67);
+  right: 0;
+  top: -550px;
+}
+.login .container .login-box .login-content {
+  height: 100%;
+}
+.login .container .login-box .login-content .qr img {
+  border: 10px white solid;
+  -webkit-box-shadow: 1px 1px 9px -1px rgba(0, 0, 0, 0.67);
+  box-shadow: 1px 1px 9px -1px rgba(0, 0, 0, 0.67);
+  margin-bottom: 20px;
+}
+.login .container .login-box .login-content .qr p:first-of-type {
+  font-weight: 800;
+  font-size: 20px;
+  margin-bottom: 50px;
+}
+.login .container .login-box .login-content .form {
+  height: 100%;
+}
+.login .container .login-box .login-content .form form {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  gap: 50px;
+  padding-top: 50px;
+  align-items: center;
+}
+.login .container .login-box .login-content .form form label {
+  font-size: 25px;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+}
+.login .container .login-box .login-content .form form > div {
+  width: 300px;
+}
+.login .container .login-box .login-content .form form input {
+  height: 38px;
+  border: 1px solid gray;
+  outline: none;
+  width: 260px;
+}
+.login .container .login-box .login-content .form form button {
+  margin-bottom: 15px;
+  width: 300px;
+  background: #B4A078;
+  border: none;
+  height: 48px;
+  color: white;
+  font-size: 18px;
+}
+.login .container .login-box .switch-login {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.login .container .login-box .switch-login img:nth-of-type(1) {
+  height: 60px;
+  width: 60px;
+}
+.login .container .login-box .switch-login img:nth-of-type(2) {
+  height: 20px;
+  width: 105px;
+  position: absolute;
+  top: 10px;
+  left: 50px;
+}
+.login .container .login-box span {
+  color: #CC9756;
+}
+.login .container .login-box .login-bottom {
+  height: 60px;
+  background: #F5F3EF;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+}
+.login .container .login-box .login-bottom a {
+  color: gray;
+  font-size: 12px;
+  margin-right: 10px;
+}
+
+main .container {
+  padding-top: 60px;
+  padding-bottom: 35px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+main .container > div {
+  flex: 1;
+  height: 204px;
+}
+main .container > div > p:not(:first-of-type) {
+  font-size: 14px;
+  line-height: 18px;
+}
+main .container > div:nth-of-type(-n+2) {
+  border-right: #CBCBCB 1px solid;
+}
+main .container .middle {
+  padding-right: 35px;
+  padding-left: 35px;
+  box-sizing: border-box;
+}
+main .container .middle > p:first-of-type {
+  text-align: center;
+}
+main .container .middle p:nth-of-type(-n+2) {
+  margin-bottom: 20px;
+}
+main .container .right {
+  display: flex;
+  justify-self: center;
+  align-items: center;
+}
+main .container .right > div {
+  display: inline-block;
+  text-align: center;
+  margin: 0 auto;
+}
+main .container .right > div p {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
