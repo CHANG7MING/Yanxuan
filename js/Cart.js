@@ -8,6 +8,7 @@ export default class Cart extends Component {
     static getCartAPI = "http://localhost:8080/getCart";
     static updateCartAPI = "http://localhost:8080/updateCart";
 
+    headerElem
     updateDBNumberDebounce
     main
     data
@@ -26,7 +27,6 @@ export default class Cart extends Component {
         if (!this.userInfo) window.location.href = "./login.html"
         this.updateDBNumberDebounce = this.debounce(this.updateDBNumber, 500) // 创建防抖函数, 用于计数器防抖更新数据库
         this.generateHTML()
-
     }
 
 
@@ -60,20 +60,19 @@ export default class Cart extends Component {
         this.updateTotalPrice()
     }
 
-    selectAll(){
+    selectAll() {
         this.cks.forEach(item => item.checked = true)
     }
 
-    unSelectAll(){
+    unSelectAll() {
         this.cks.forEach(item => item.checked = false)
     }
 
     // 更新应付总额
     updateTotalPrice() {
-        if(!this.checkedItem) {
+        if (!this.checkedItem) {
             this.totalPrice = 0
-        }
-        else {
+        } else {
             this.totalPrice = this.checkedItem.reduce((v, t) => {
                 return v + parseInt(t.parentNode.parentNode.querySelector(".subtotal").innerText)
             }, 0)
@@ -126,11 +125,18 @@ export default class Cart extends Component {
             `
         }, "")
 
-        // 删除商品
+        this.listenDelBtn()
+        this.createStepNumber(parent)
+    }
+
+    // 监听删除商品按钮
+    listenDelBtn() {
         parent.querySelectorAll(".del").forEach(item => item.addEventListener("click", e => this.delHandler(e)))
         this.listenCheckBox()
+    }
 
-        // 创建计数器, 并且更新数据库
+    // 创建计数器, 并且更新数据库
+    createStepNumber(parent) {
         for (let i = 0; i < this.data.length; i++) {
             let _step = new StepNumber(this.data[i].num)
             _step.appendTo(parent.querySelector(`.step-num[data='${this.data[i].id}']`))
@@ -142,13 +148,11 @@ export default class Cart extends Component {
                 this.updateDBNumberDebounce(this.data[i].id, _step.num)
             })
         }
-
-
     }
 
-
+    // 删除购物车数据库中指定id的商品
     async delHandler(e) {
-        new AJAX(Cart.updateCartAPI, {
+        await new AJAX(Cart.updateCartAPI, {
             method: "POST",
             body: JSON.stringify({
                 id: e.target.getAttribute("data"),
@@ -158,8 +162,10 @@ export default class Cart extends Component {
         this.data = await new AJAX(Cart.getCartAPI, {method: "POST", body: this.userInfo})
         this.createItems(this.elem.querySelector("tbody"))
         this.updateTotalPrice()
+        await this.headerElem.updateCartNum()
     }
 
+    // 更新购物车数据库中指定商品的数量
     updateDBNumber(id, num) {
         new AJAX(Cart.updateCartAPI, {
             method: "POST",
@@ -186,7 +192,8 @@ export default class Cart extends Component {
     }
 
     createHeader(parent) {
-        new Header().appendTo(parent)
+        this.headerElem = new Header()
+        this.headerElem.appendTo(parent)
     }
 
     createFooter(parent) {

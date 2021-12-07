@@ -1,11 +1,15 @@
 import Component from "./Component.js";
+import AJAX from "./AJAX.js";
 
 export default class Header extends Component {
-    static cssBool=false;
+    static getCartNumAPI = "http://localhost:8080/getCartNum"
+    static cssBool = false;
     navList
     elem
     userStatus
     userElem
+    cartNum
+    cartElem
 
     constructor() {
         super();
@@ -13,26 +17,45 @@ export default class Header extends Component {
         this.elem = document.createElement("header")
         this.generateHTML()
         this.userElem = this.elem.querySelector(".user")
+        this.cartElem = this.elem.querySelector(".cart-num")
         this.userElem.addEventListener("click", e => this.logoutHandler(e))
         this.getUserStatus()
         this.navList = this.elem.querySelectorAll("#nav-list > li")
         this.listen()
     }
 
-    getUserStatus(){
+    // 当需要从服务器获取用户购物车最新数量时，调用此方法
+    async updateCartNum() {
+        if (!this.userStatus) return
+        localStorage.setItem("cartNum", await new AJAX(Header.getCartNumAPI + "?id=" + this.userStatus.id))
+        this.setCartNum()
+    }
+
+    // 不会导致购物车数量变化时, 使用此方法从localStorage中获取并设置购物车数量
+    setCartNum() {
+        this.cartNum = JSON.parse(localStorage.getItem('cartNum'))
+        this.cartElem.innerHTML = this.cartNum
+    }
+
+    // 获取用户登录状态, 如果已登录, 设置购物车数量
+    getUserStatus() {
         this.userStatus = JSON.parse(localStorage.getItem('user'))
         if (!this.userStatus) {
             this.userElem.innerHTML = `<a href="./login.html">登录 / 注册</a>`
+            this.cartElem.innerHTML = 0
             return
         }
         this.userElem.innerHTML = `
             <a href="javascript:;">${this.userStatus.username}, 点击退出登录</a>
         `
+        this.setCartNum()
     }
 
-    logoutHandler(e){
+    // 用户点击退出登录时, 清除用户登录状态, 并将购物车数量设为0
+    logoutHandler(e) {
         e.stopPropagation()
         localStorage.removeItem('user')
+        localStorage.removeItem('cartNum')
         this.getUserStatus()
     }
 

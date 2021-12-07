@@ -16,6 +16,7 @@ export default class NewProduct extends Component {
         this.elem = document.createElement("div");
     }
 
+    // 生成商品
     async generateItems(data) {
         data = data.slice(0,4)
         this.content = `

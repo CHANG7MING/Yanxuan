@@ -11,6 +11,7 @@ export default class Detail extends Component {
     static detailAPI = "http://localhost:8080/getDetail";
     static addCartAPI = "http://localhost:8080/addCart";
 
+    headerElem
     data
     prev
     zoom
@@ -49,7 +50,7 @@ export default class Detail extends Component {
         this.elem.querySelector(".add-cart").addEventListener("click", (e) => this.addCartHandler(e))
     }
 
-    addCartHandler(e){
+    async addCartHandler(e){
         let user = JSON.parse(localStorage.getItem("user"))
         if (!user) location.href = "./login.html"
         let body = {
@@ -57,11 +58,11 @@ export default class Detail extends Component {
             pid:this.currentSelect,
             num:this.stepNumber.num
         }
-        console.log(body)
-        new AJAX(Detail.addCartAPI, {
+        await new AJAX(Detail.addCartAPI, {
             method: "POST",
             body: JSON.stringify(body)
         })
+        await this.headerElem.updateCartNum()
     }
 
     changeCurrentSelect(id) {
@@ -94,7 +95,8 @@ export default class Detail extends Component {
     }
 
     createHeader(parent) {
-        new Header().appendTo(parent)
+        this.headerElem = new Header()
+        this.headerElem.appendTo(parent)
     }
 
     createFooter(parent) {

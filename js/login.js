@@ -7,6 +7,7 @@ export default class Login extends Component {
 
     static loginAPI="http://localhost:8080/login"
     static registerAPI="http://localhost:8080/register"
+    headerElem
     elem
     switchLogin
     loginContent
@@ -43,17 +44,13 @@ export default class Login extends Component {
         let data = await new AJAX(reqURL, {method:"POST",body:JSON.stringify(reqBody)})
         console.log(data)
         if (!data.ok) {
-            console.log(data)
             alert(data.msg)
             return
         } else if (data.ok) {
-            console.log(data)
             let user = data.data
             localStorage.setItem("user", JSON.stringify(user))
             window.location.href = "./index.html"
         }
-        console.log(data)
-
     }
 
     addSwitch() {
@@ -67,7 +64,8 @@ export default class Login extends Component {
     }
 
     createHeader(parent) {
-        new Header().appendTo(parent)
+        this.headerElem = new Header()
+        this.headerElem.appendTo(parent)
     }
 
     createFooter(parent) {
@@ -129,6 +127,4 @@ export default class Login extends Component {
             <link rel="stylesheet" href="./css/global.css">
         `
     }
-
 }
-

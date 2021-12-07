@@ -12,6 +12,18 @@ async function init() {
     });
 }
 
+function getCartNum(id) {
+    return new Promise((resolve, reject) => {
+        db.query(`SELECT * FROM cart WHERE uid = ${id}`, (err, data) => {
+            if (err) {
+                resolve(err);
+            } else {
+                resolve(data.length);
+            }
+        });
+    });
+}
+
 function addCart(data) {
     return new Promise((resolve, reject) => {
         db.query(`SELECT * FROM cart WHERE uid = ${data.uid} AND pid = ${data.pid}`, (err, res) => {
@@ -77,7 +89,7 @@ function getDetail(id) {
     return new Promise((resolve, reject) => {
         db.query(`SELECT * FROM product WHERE id = ${id}`, (err, data) => {
             if (err) {
-                reject(err);
+                resolve(err);
             } else {
                 resolve(data);
             }
@@ -188,3 +200,4 @@ exports.getDetail = getDetail;
 exports.addDetailSKUInfo = addDetailSKUInfo;
 exports.updateCart = updateCart;
 exports.addCart = addCart;
+exports.getCartNum = getCartNum;

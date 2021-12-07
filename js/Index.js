@@ -24,13 +24,14 @@ export default class Index extends Component {
         this.createHeader(this.elem)
         this.createBanner(this.bannerImg, this.elem)
         let data = await new AJAX(Index.dataAPI)
-        console.log(data)
         this.generateNewProduct(data, this.elem)
         this.createFooter(this.elem)
     }
 
     createHeader(parent) {
-        new Header().appendTo(parent)
+        this.headerElem = new Header()
+        this.headerElem.appendTo(parent)
+        this.headerElem.updateCartNum()
     }
 
     createBanner(bannerImg, parent) {

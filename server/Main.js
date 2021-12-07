@@ -1,14 +1,15 @@
 const http = require("http");
 const {
-    register:dbRegister,
-    getCart:dbGetCart,
-    login:dbLogin,
-    getList:dbGetList,
-    addListPrice:dbAddListPrice,
-    getDetail:dbGetDetail,
+    register: dbRegister,
+    getCart: dbGetCart,
+    login: dbLogin,
+    getList: dbGetList,
+    addListPrice: dbAddListPrice,
+    getDetail: dbGetDetail,
     addDetailSKUInfo: dbAddDetailSKUInfo,
     updateCart: dbUpdateCart,
     addCart: dbAddCart,
+    getCartNum: dbGetCartNum,
 } = require("./sql");
 
 http.createServer(function (req, res) {
@@ -38,10 +39,18 @@ function router(type, req, res) {
             return updateCart(req, res);
         case "/addCart":
             return addCart(req, res);
+        case "/getCartNum":
+            return getCartNum(req, res);
     }
 }
 
-async function addCart(req,res){
+async function getCartNum(req, res) {
+    let id = req.url.split("=")[1];
+    let result = await dbGetCartNum(id)
+    res.end(JSON.stringify(result))
+}
+
+async function addCart(req, res) {
     let data = await getData(req);
     data = JSON.parse(data);
     console.log(data);
@@ -50,7 +59,7 @@ async function addCart(req,res){
     res.end(JSON.stringify(result));
 }
 
-async function updateCart(req,res) {
+async function updateCart(req, res) {
     let data = await getData(req)
     data = JSON.parse(data)
     let result = await dbUpdateCart(data.id, data.num);
@@ -58,7 +67,6 @@ async function updateCart(req,res) {
     res.end(JSON.stringify(result));
 }
 
-// TODO: 购物车
 async function getCart(req, res) {
     let user = await getData(req)
     user = JSON.parse(user)
@@ -68,13 +76,13 @@ async function getCart(req, res) {
 
 async function getDetail(req, res) {
     let id = req.url.split("=")[1];
-    console.log("getDetail: "+id)
+    console.log("getDetail: " + id)
     let data = await dbGetDetail(id);
     data = await dbAddDetailSKUInfo(data[0])
     res.end(JSON.stringify(data));
 }
 
-async function getList(req,res) {
+async function getList(req, res) {
     let result = await dbGetList(req, res);
     result = await dbAddListPrice(result)
     res.end(JSON.stringify(result))
