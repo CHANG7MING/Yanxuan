@@ -52,6 +52,9 @@ main .container .main-content .main-content-right .right-main > div > :not(:nth-
 main .container .main-content .main-content-right .right-main > div > :not(:nth-child(1)) span {
   margin-right: 10px;
 }
+main .container .main-content .main-content-right .right-main > div .city-menu-container {
+  display: inline-block;
+}
 main .container .main-content .main-content-right .right-main > div:first-of-type {
   height: 50px;
 }

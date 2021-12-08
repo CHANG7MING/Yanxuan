@@ -132,7 +132,7 @@ function getCart(uid) {
 
 function getList(){
     return new Promise((resolve, reject) => {
-        db.query(`SELECT \`id\`, \`title\`, \`desc\`, \`img1\`, \`img2\` FROM product;`, (err, result) => {
+        db.query('SELECT `id`, `title`, `desc`, `img1`, `img2` FROM product;', (err, result) => {
             if (err) {
                 console.log(err);
                 resolve(err);

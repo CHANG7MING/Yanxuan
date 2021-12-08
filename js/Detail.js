@@ -5,6 +5,7 @@ import AJAX from "./AJAX.js";
 import Utils from "./Utils.js";
 import Zoom from "./Zoom.js";
 import StepNumber from "./StepNumber.js";
+import CityMenu from "./CityMenu.js";
 
 export default class Detail extends Component {
 
@@ -20,6 +21,7 @@ export default class Detail extends Component {
     main
     stepNumber
     currentSelect
+    cityMenu
     id
 
     constructor() {
@@ -34,10 +36,10 @@ export default class Detail extends Component {
         this.data = await new AJAX(Detail.detailAPI + "?id=" + this.id) // get data from server by id
         this.createHeader(this.elem) // create header content
         this.createMain(this.elem) // create main content
-        this.createFooter(this.elem) //
+        this.createFooter(this.elem) // create footer content
         this.imgList = [this.data.img1, this.data.img2, this.data.img3, this.data.img4, this.data.img5]
         this.createZoom(this.imgList, ".main-content-left")
-
+        this.createCityMenu(this.main.querySelector(".city-menu-container"))
 
         this.linkSKUWithImgCon()
         this.numCon = this.elem.querySelector(".step-num") // get step-num container
@@ -82,6 +84,12 @@ export default class Detail extends Component {
         e.target.parentNode.classList.add("selected")
         this.changeCurrentSelect(Number(e.target.parentNode.getAttribute("sku")))
         this.zoom.changeImg("./" + this.currentSelect + ".webp")
+    }
+
+    createCityMenu(parent) {
+        console.log(parent)
+        this.cityMenu = new CityMenu()
+        this.cityMenu.appendTo(parent)
     }
 
     createStepNumber(parent){
@@ -141,7 +149,7 @@ export default class Detail extends Component {
                             </div>
                             <div>
                                 <span>配送</span>
-                                <span>地址</span>
+                                <div class="city-menu-container"></div>
                             </div>
                         </div>
         

@@ -12,6 +12,8 @@ const {
     getCartNum: dbGetCartNum,
 } = require("./sql");
 
+const cityData = require("./cityData");
+
 http.createServer(function (req, res) {
     let type = req.url.split("?")[0];
     console.log("type: " + type)
@@ -20,7 +22,6 @@ http.createServer(function (req, res) {
         "Access-Control-Allow-Origin": "*"
     })
     router(type, req, res)
-
 }).listen(8080);
 
 function router(type, req, res) {
@@ -41,7 +42,31 @@ function router(type, req, res) {
             return addCart(req, res);
         case "/getCartNum":
             return getCartNum(req, res);
+
+        case "/getProvince":
+            return getProvince(req, res);
+        case "/getCity":
+            return getCity(req, res);
+        case "/getTown":
+            return getTown(req, res);
     }
+}
+
+async function getProvince(req, res) {
+    console.log(typeof cityData);
+    res.end(JSON.stringify(cityData["86"]));
+}
+
+async function getCity(req, res) {
+    let data = await getData(req);
+    data = JSON.parse(data);
+    res.end(JSON.stringify(cityData[data.provinceId]));
+}
+
+async function getTown(req, res) {
+    let data = await getData(req);
+    data = JSON.parse(data);
+    res.end(JSON.stringify(cityData[data.cityId]));
 }
 
 async function getCartNum(req, res) {
@@ -92,7 +117,6 @@ async function login(req, res) {
     let data = await getData(req);
     data = JSON.parse(data)
     let result = await dbLogin(data)
-
     res.end(JSON.stringify(result));
 }
 
