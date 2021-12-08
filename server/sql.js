@@ -33,7 +33,7 @@ function addCart(data) {
                     msg: "查询失败"
                 });
             } else if (res.length === 1) {
-                db.query(`UPDATE cart SET num = ${res[0].num + data.num} WHERE pid = ${data.pid}`, (err, data) => {
+                db.query(`UPDATE cart SET num = ${res[0].num + data.num} WHERE uid = ${data.uid} AND pid = ${data.pid}`, (err, data) => {
                     if (err) {
                         resolve({
                             ok: false,
