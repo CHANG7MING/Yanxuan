@@ -95,7 +95,6 @@ export default class Cart extends Component {
     // 监听删除商品按钮
     listenDelBtn(parent) {
         parent.querySelectorAll(".del").forEach(item => item.addEventListener("click", e => this.delHandler(e)))
-        this.listenCheckBox()
     }
 
     // 创建计数器, 并且更新数据库
@@ -201,6 +200,7 @@ export default class Cart extends Component {
         }, "")
 
         this.listenDelBtn(parent)
+        this.listenCheckBox()
         this.createStepNumber(parent)
     }
 
