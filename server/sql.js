@@ -184,7 +184,15 @@ function register(arr) {
                 if (err.errno === 1062) resolve({ok: false, msg: "用户名已存在"});
                 else resolve({ok: false, msg: "数据库错误"});
             } else {
-                resolve({ok: true, msg: "注册成功"});
+                resolve({
+                    ok: true,
+                    msg: "注册成功",
+                    data: {
+                        id: res.insertId,
+                        username: arr[0],
+                        password: arr[1]
+                    }
+                });
             }
         })
     })

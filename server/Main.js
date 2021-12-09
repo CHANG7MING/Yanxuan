@@ -121,13 +121,16 @@ async function login(req, res) {
 }
 
 async function register(req, res) {
+    console.log("123")
     let data = await getData(req)
     data = JSON.parse(data)
+    console.log(data)
     let arr = [data.username, data.password]
     if (!Array.isArray(arr) || arr.length !== 2 || !arr[0] || !arr[1]) {
         return res.end(JSON.stringify({ok: false, msg: "数据格式错误"}))
     }
     let result = await dbRegister(arr)
+    console.log(result)
     res.end(JSON.stringify(result))
 }
 
