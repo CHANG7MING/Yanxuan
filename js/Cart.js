@@ -32,7 +32,6 @@ export default class Cart extends Component {
 
     async generateHTML() {
         this.data = await new AJAX(Cart.getCartAPI, {method: "POST", body: this.userInfo})
-        console.log(this.data)
         this.createHeader(this.elem)
         this.createMain(this.elem)
         this.createFooter(this.elem)

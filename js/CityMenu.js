@@ -103,7 +103,6 @@ export default class CityMenu extends Component {
             </div>
         `;
         this.provinceElem = this.elem.querySelector("#province");
-        console.log(this.provinceElem)
         this.cityElem = this.elem.querySelector("#city");
         this.townElem = this.elem.querySelector("#town");
     }

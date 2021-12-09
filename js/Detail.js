@@ -87,7 +87,6 @@ export default class Detail extends Component {
     }
 
     createCityMenu(parent) {
-        console.log(parent)
         this.cityMenu = new CityMenu()
         this.cityMenu.appendTo(parent)
     }

@@ -27,7 +27,6 @@ export default class List extends Component {
 
     async generateHTML() {
         this.data = await new AJAX(this.listAPI)
-        console.log(this.data)
         this.createMain()
 
         this.orderBtn = this.main.querySelectorAll(".sort a")

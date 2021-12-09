@@ -42,7 +42,6 @@ export default class Login extends Component {
             password: this.elem.querySelector("#password").value
         }
         let data = await new AJAX(reqURL, {method:"POST",body:JSON.stringify(reqBody)})
-        console.log(data)
         if (!data.ok) {
             alert(data.msg)
             return
